@@ -2,6 +2,8 @@ package com.orel6505.restaurant.services;
 
 import com.orel6505.restaurant.repositories.OrderRepository;
 import com.orel6505.restaurant.repositories.OrderDetailRepository;
+import com.orel6505.restaurant.dto.OrderDto;
+
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -45,8 +47,15 @@ public class JpqlQueryService {
      * @param maxPrice maximum order amount
      * @return list of orders within the price range
      */
-    public List<Object[]> getOrdersByPriceRange(double minPrice, double maxPrice) {
-        return orderRepository.getOrdersByPriceRange(minPrice, maxPrice);
+    public List<OrderDto> getOrdersByPriceRange(double minPrice, double maxPrice) {
+        List<Object[]> results = orderRepository.getOrdersByPriceRange(minPrice, maxPrice);
+        return results.stream()
+            .map(arr -> new com.orel6505.restaurant.dto.OrderDto(
+                (Integer) arr[0],
+                (Integer) arr[1],
+                (Double) arr[2]
+            ))
+            .toList();
     }
 
     /**

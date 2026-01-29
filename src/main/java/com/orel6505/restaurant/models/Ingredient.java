@@ -15,9 +15,10 @@ public class Ingredient {
     @Column
     private Integer id;
 
-    @JsonProperty
-    @Column(nullable = false)
-    private int dishId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dish_id", nullable = false)
+    @JsonBackReference
+    private Dish dish;
 
     @JsonProperty
     @Column(nullable = false)
@@ -27,16 +28,17 @@ public class Ingredient {
         // Empty constructor
     }
 
-    public Ingredient(int dishId, String name) {
-        this.dishId = dishId;
+    public Ingredient(Dish dish, String name) {
+        this.dish = dish;
         this.name = name;
     }
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
-    public int getDishId() { return dishId; }
-    public void setDishId(int dishId) { this.dishId = dishId; }
+    public Dish getDish() { return dish; }
+    public void setDish(Dish dish) { this.dish = dish; }
+    // Removed getDishId()
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

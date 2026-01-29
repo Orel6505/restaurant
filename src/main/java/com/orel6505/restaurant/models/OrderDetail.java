@@ -15,13 +15,15 @@ public class OrderDetail {
     @Column
     private Integer id;
 
-    @JsonProperty
-    @Column(nullable = false)
-    private int orderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
+    private Order order;
 
-    @JsonProperty
-    @Column(nullable = false)
-    private int dishId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dish_id", nullable = false)
+    @JsonBackReference
+    private Dish dish;
 
     @JsonProperty
     @Column(nullable = false)
@@ -35,9 +37,9 @@ public class OrderDetail {
         // Empty constructor
     }
 
-    public OrderDetail(int orderId, int dishId, int quantity, double unitPrice) {
-        this.orderId = orderId;
-        this.dishId = dishId;
+    public OrderDetail(Order order, Dish dish, int quantity, double unitPrice) {
+        this.order = order;
+        this.dish = dish;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
@@ -45,11 +47,11 @@ public class OrderDetail {
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
-    public int getOrderId() { return orderId; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
+    public Order getOrder() { return order; }
+    public void setOrder(Order order) { this.order = order; }
 
-    public int getDishId() { return dishId; }
-    public void setDishId(int dishId) { this.dishId = dishId; }
+    public Dish getDish() { return dish; }
+    public void setDish(Dish dish) { this.dish = dish; }
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }

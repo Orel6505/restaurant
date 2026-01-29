@@ -39,7 +39,7 @@ public class IngredientService {
 
     public Ingredient update(int id, Ingredient updated) {
         Ingredient existing = getById(id);
-        existing.setDishId(updated.getDishId());
+        existing.setDish(updated.getDish());
         existing.setName(updated.getName());
         return ingredientRepository.save(existing);
     }

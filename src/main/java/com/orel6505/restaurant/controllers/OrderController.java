@@ -60,7 +60,7 @@ public class OrderController {
     // Analytics Endpoints
 
     @GetMapping("/price-range")
-    public List<Object[]> getOrdersByPriceRange(@RequestParam("minPrice") double minPrice, @RequestParam("maxPrice") double maxPrice) {
+    public List<OrderDto> getOrdersByPriceRange(@RequestParam("minPrice") double minPrice, @RequestParam("maxPrice") double maxPrice) {
         return jpqlQueryService.getOrdersByPriceRange(minPrice, maxPrice);
     }
 }

@@ -8,6 +8,10 @@ import com.fasterxml.jackson.databind.annotation.*;
 @JsonSerialize
 @Table(name = "users")
 public class User {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty
+    private java.util.List<Order> orders = new java.util.ArrayList<>();
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +49,11 @@ public class User {
         this.age = age;
         this.address = address;
         this.email = email;
+        this.orders = new java.util.ArrayList<>();
     }
+
+    public java.util.List<Order> getOrders() { return orders; }
+    public void setOrders(java.util.List<Order> orders) { this.orders = orders; }
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }

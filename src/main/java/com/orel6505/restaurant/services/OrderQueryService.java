@@ -30,18 +30,19 @@ public class OrderQueryService {
 
     public FullOrderDto getFullOrder(int orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
+            .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
 
         List<OrderDetail> details = orderDetailRepository.findByOrderId(orderId);
 
         List<OrderItemDto> items = new ArrayList<>();
         for (OrderDetail d : details) {
-            Dish dish = dishRepository.findById(d.getDishId())
-                    .orElseThrow(() -> new RuntimeException("Dish not found: " + d.getDishId()));
-
+            Dish dish = d.getDish();
+            if (dish == null) {
+            throw new RuntimeException("Dish not found for OrderDetail: " + d.getId());
+            }
             items.add(new OrderItemDto(dish.getId(), dish.getName(), dish.getPrice()));
         }
 
-        return new FullOrderDto(order.getId(), order.getUserId(), order.getTotalPrice(), items);
+        return new FullOrderDto(order.getId(), order.getUser() != null ? order.getUser().getId() : null, order.getTotalPrice(), items);
     }
 }

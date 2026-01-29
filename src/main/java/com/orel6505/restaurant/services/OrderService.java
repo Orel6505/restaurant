@@ -35,7 +35,7 @@ public class OrderService {
 
     public Order update(int id, Order updated) {
         Order existing = getById(id);
-        existing.setUserId(updated.getUserId());
+        existing.setUser(updated.getUser());
         existing.setTotalPrice(updated.getTotalPrice());
         return orderRepository.save(existing);
     }

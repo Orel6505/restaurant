@@ -6,6 +6,12 @@ import com.fasterxml.jackson.annotation.*;
 @Entity
 @Table(name = "dish")
 public class Dish {
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty
+    private java.util.List<Ingredient> ingredients = new java.util.ArrayList<>();
+
+    public java.util.List<Ingredient> getIngredients() { return ingredients; }
+    public void setIngredients(java.util.List<Ingredient> ingredients) { this.ingredients = ingredients; }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

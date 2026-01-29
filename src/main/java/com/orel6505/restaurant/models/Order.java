@@ -9,6 +9,10 @@ import java.time.LocalDateTime;
 @JsonSerialize
 @Table(name = "orders")
 public class Order {
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty
+    private java.util.List<OrderDetail> orderDetails = new java.util.ArrayList<>();
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +20,10 @@ public class Order {
     @Column
     private Integer id;
 
-    @JsonProperty
-    @Column(nullable = false)
-    private int userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
 
     @JsonProperty
     @Column(nullable = false)
@@ -32,10 +37,14 @@ public class Order {
         // Empty constructor
     }
 
-    public Order(int userId, double totalPrice) {
-        this.userId = userId;
+    public Order(User user, double totalPrice) {
+        this.user = user;
         this.totalPrice = totalPrice;
+        this.orderDetails = new java.util.ArrayList<>();
     }
+
+    public java.util.List<OrderDetail> getOrderDetails() { return orderDetails; }
+    public void setOrderDetails(java.util.List<OrderDetail> orderDetails) { this.orderDetails = orderDetails; }
 
     @PrePersist
     public void onCreate() {
@@ -47,8 +56,9 @@ public class Order {
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    // Removed getUserId()
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
     public double getTotalPrice() { return totalPrice; }
     public void setTotalPrice(double totalPrice) { this.totalPrice = totalPrice; }

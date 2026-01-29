@@ -39,8 +39,8 @@ public class OrderDetailService {
 
     public OrderDetail update(int id, OrderDetail updated) {
         OrderDetail existing = getById(id);
-        existing.setOrderId(updated.getOrderId());
-        existing.setDishId(updated.getDishId());
+        existing.setOrder(updated.getOrder());
+        existing.setDish(updated.getDish());
         existing.setQuantity(updated.getQuantity());
         existing.setUnitPrice(updated.getUnitPrice());
         return orderDetailRepository.save(existing);

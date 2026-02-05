@@ -8,6 +8,8 @@ DROP TABLE IF EXISTS order_detail;
 DROP TABLE IF EXISTS ingredient;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS dish;
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS users;
 
 -- Users table
@@ -17,7 +19,24 @@ CREATE TABLE users (
     last_name VARCHAR(255) NOT NULL,
     age INT,
     address VARCHAR(255),
-    email VARCHAR(255)
+    email VARCHAR(255),
+    password VARCHAR(255) NOT NULL
+);
+
+-- Roles table
+CREATE TABLE role (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL UNIQUE,
+    role_description VARCHAR(255)
+);
+
+-- User Roles junction table (many-to-many)
+CREATE TABLE user_roles (
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
 );
 
 -- Dishes table
@@ -56,12 +75,26 @@ CREATE TABLE order_detail (
 );
 
 -- Seed data: 5 users
-INSERT INTO users (first_name, last_name, age, address, email) VALUES
-('Alice', 'Johnson', 28, '123 Maple St', 'alice@example.com'),
-('Bob', 'Smith', 35, '456 Oak Ave', 'bob@example.com'),
-('Carol', 'Davis', 42, '789 Pine Rd', 'carol@example.com'),
-('David', 'Miller', 31, '12 Birch Blvd', 'david@example.com'),
-('Eve', 'Wilson', 24, '34 Cedar Ln', 'eve@example.com');
+INSERT INTO users (first_name, last_name, age, address, email, password) VALUES
+('Alice', 'Johnson', 28, '123 Maple St', 'alice@example.com', '$2a$10$slYQmyNdGzin7olVVCb1Be7DlH.PKZbv5H8KnzzVgXXbVxzy1B1m2'),
+('Bob', 'Smith', 35, '456 Oak Ave', 'bob@example.com', '$2a$10$slYQmyNdGzin7olVVCb1Be7DlH.PKZbv5H8KnzzVgXXbVxzy1B1m2'),
+('Carol', 'Davis', 42, '789 Pine Rd', 'carol@example.com', '$2a$10$slYQmyNdGzin7olVVCb1Be7DlH.PKZbv5H8KnzzVgXXbVxzy1B1m2'),
+('David', 'Miller', 31, '12 Birch Blvd', 'david@example.com', '$2a$10$slYQmyNdGzin7olVVCb1Be7DlH.PKZbv5H8KnzzVgXXbVxzy1B1m2'),
+('Eve', 'Wilson', 24, '34 Cedar Ln', 'eve@example.com', '$2a$10$slYQmyNdGzin7olVVCb1Be7DlH.PKZbv5H8KnzzVgXXbVxzy1B1m2');
+
+-- Seed data: 3 roles
+INSERT INTO role (role_name, role_description) VALUES
+('ADMIN', 'Administrator with full access'),
+('MANAGER', 'Manager with limited administrative access'),
+('USER', 'Regular user with basic access');
+
+-- Seed data: assign roles to users
+INSERT INTO user_roles (user_id, role_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 3),
+(5, 3);
 
 -- Seed data: 5 dishes
 INSERT INTO dish (name, price) VALUES

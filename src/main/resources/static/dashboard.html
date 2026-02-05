@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Restaurant Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar h1 {
+            font-size: 24px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-details {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-roles {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .btn-logout {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-logout:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .welcome h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .welcome p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s;
+            border-top: 4px solid #667eea;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .info-label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .code-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            overflow-x: auto;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🍽️ Restaurant Management Dashboard</h1>
+        <div class="user-info">
+            <div class="user-details">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-roles" id="userRoles">Loading...</div>
+            </div>
+            <a href="/swagger-ui.html" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">📚 API Docs</a>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome">
+            <h2>Welcome to Restaurant Management System</h2>
+            <p>You are successfully logged in and can now access the API endpoints.</p>
+            <p>This system is built with Spring Boot, JWT authentication, and includes comprehensive role-based access control (RBAC).</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>Authentication Token</h3>
+            <p>Your JWT token has been securely stored. It will be automatically included in API requests.</p>
+            <div class="code-box" id="tokenDisplay">Loading...</div>
+            <p style="color: #999; font-size: 12px; margin-top: 10px;">This token is valid for 24 hours. Keep it secure and never share it.</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>API Endpoints</h3>
+            <p>Access the following endpoints with your JWT token:</p>
+            <div class="quick-actions">
+                <a href="/swagger-ui.html" target="_blank" class="btn">📚 API Documentation</a>
+                <a href="/v3/api-docs" target="_blank" class="btn">📋 OpenAPI Spec</a>
+                <button class="btn" onclick="copyToken()">📋 Copy Token</button>
+                <a href="#" onclick="showUserInfo(); return false;" class="btn">👤 User Info</a>
+            </div>
+        </div>
+        
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-icon">🍖</div>
+                <h3>Dishes</h3>
+                <p>Manage restaurant dishes, prices, and menus.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h3>Ingredients</h3>
+                <p>Track ingredients and their relationships with dishes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📋</div>
+                <h3>Orders</h3>
+                <p>Create and manage customer orders.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">👥</div>
+                <h3>Users</h3>
+                <p>Manage user accounts and profiles.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔐</div>
+                <h3>Roles</h3>
+                <p>Configure role-based access control (RBAC).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Reports</h3>
+                <p>View order details and system information.</p>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>User Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Name</div>
+                    <div class="info-value" id="infoName">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Email</div>
+                    <div class="info-value" id="infoEmail">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">User ID</div>
+                    <div class="info-value" id="infoId">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Status</div>
+                    <div class="info-value"><span class="status active">Active</span></div>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="info-label">Assigned Roles</div>
+                <div id="infoRoles" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>Getting Started</h3>
+            <ol style="color: #666; line-height: 1.8; margin-left: 20px;">
+                <li>Your JWT token is stored in browser's localStorage</li>
+                <li>Visit <a href="/swagger-ui.html" target="_blank">API Documentation</a> to explore all endpoints</li>
+                <li>All API requests automatically include your authentication token</li>
+                <li>Your access level is determined by your assigned roles (ADMIN, MANAGER, or USER)</li>
+                <li>Logout to clear your authentication credentials</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // Load user information on page load
+        window.addEventListener('load', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const token = localStorage.getItem('token');
+            
+            if (!user || !token) {
+                globalThis.location.href = '/index.html';
+                return;
+            }
+            
+            // Display user info
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('userRoles').textContent = `Roles: ${Array.from(user.roles).join(', ')}`;
+            
+            // Display token
+            const tokenDisplay = document.getElementById('tokenDisplay');
+            const shortToken = token.substring(0, 50) + '...' + token.substring(token.length - 20);
+            tokenDisplay.textContent = shortToken;
+            tokenDisplay.title = token;
+            
+            // Display user information
+            document.getElementById('infoName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('infoEmail').textContent = user.email;
+            document.getElementById('infoId').textContent = user.id;
+            
+            // Display roles
+            const rolesDiv = document.getElementById('infoRoles');
+            if (user.roles && user.roles.length > 0) {
+                rolesDiv.innerHTML = user.roles.map(role => 
+                    `<span class="status active" style="margin-right: 10px; display: inline-block;">${role}</span>`
+                ).join('');
+            } else {
+                rolesDiv.innerHTML = '<span class="status">No roles assigned</span>';
+            }
+        });
+        
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            globalThis.location.href = '/index.html';
+        }
+        
+        function copyToken() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                navigator.clipboard.writeText(token).then(() => {
+                    alert('Token copied to clipboard!');
+                });
+            }
+        }
+        
+        function showUserInfo() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            alert(`User: ${user.firstName} ${user.lastName}\nEmail: ${user.email}\nRoles: ${Array.from(user.roles).join(', ')}`);
+        }
+        
+        // Helper function to make authenticated API calls
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const token = localStorage.getItem('token');
+            const options = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+            
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+            
+            try {
+                const response = await fetch(endpoint, options);
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    console.error(`API Error: ${response.status} ${response.statusText}`);
+                    return null;
+                }
+            } catch (error) {
+                console.error('API Call Error:', error);
+                return null;
+            }
+        }
+        
+        // Test API call (accessible from console: apiCall('/api/roles'))
+        window.apiCall = apiCall;
+    </script>
+</body>
+</html>

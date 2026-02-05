@@ -12,15 +12,15 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByUserId(int userId);
 
-    @Query("SELECT COALESCE(SUM(o.totalPrice), 0.0) FROM Order o WHERE o.userId = :userId")
+    @Query("SELECT COALESCE(SUM(o.totalPrice), 0.0) FROM Order o WHERE o.user.id = :userId")
     Double getTotalSpentByUser(@Param("userId") int userId);
 
-    @Query("SELECT o.id, o.userId, o.totalPrice FROM Order o WHERE o.totalPrice BETWEEN :min AND :max ORDER BY o.totalPrice DESC")
+    @Query("SELECT o.id, o.user.id, o.totalPrice FROM Order o WHERE o.totalPrice BETWEEN :min AND :max ORDER BY o.totalPrice DESC")
     List<Object[]> getOrdersByPriceRange(@Param("min") double min, @Param("max") double max);
 
-    @Query("SELECT AVG(o.totalPrice) FROM Order o WHERE o.userId = :userId")
+    @Query("SELECT AVG(o.totalPrice) FROM Order o WHERE o.user.id = :userId")
     Double getAverageOrderValueByUser(@Param("userId") int userId);
 
-    @Query("SELECT COUNT(o.id), SUM(o.totalPrice) FROM Order o WHERE o.userId = :userId")
+    @Query("SELECT COUNT(o.id), SUM(o.totalPrice) FROM Order o WHERE o.user.id = :userId")
     Object[] getUserStatistics(@Param("userId") int userId);
 }

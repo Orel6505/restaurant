@@ -40,6 +40,9 @@ public class UserService {
         existing.setAge(updated.getAge());
         existing.setAddress(updated.getAddress());
         existing.setEmail(updated.getEmail());
+        if (updated.getPassword() != null && !updated.getPassword().isEmpty()) {
+            existing.setPassword(updated.getPassword());
+        }
         return userRepository.save(existing);
     }
 

@@ -10,12 +10,13 @@ public class UserMapper {
 
     public static UserDto toDto(User user) {
         return new UserDto(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getAge(),
-                user.getAddress(),
-                user.getEmail()
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getAge(),
+            user.getAddress(),
+            user.getEmail(),
+            null  // Never expose password in API responses
         );
     }
 
@@ -25,7 +26,8 @@ public class UserMapper {
                 dto.lastName(),
                 dto.age() != null ? dto.age() : 0,
                 dto.address(),
-                dto.email()
+                dto.email(),
+                dto.password()
         );
         user.setId(dto.id());
         return user;

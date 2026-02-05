@@ -4,6 +4,7 @@ import com.orel6505.restaurant.dto.OrderDto;
 import com.orel6505.restaurant.mappers.OrderMapper;
 import com.orel6505.restaurant.services.JpqlQueryService;
 import com.orel6505.restaurant.services.OrderService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,21 +22,25 @@ public class UserOrderController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public List<OrderDto> getUserOrders(@PathVariable("userId") int userId) {
         return orderService.getByUserId(userId).stream().map(OrderMapper::toDto).toList();
     }
 
     @GetMapping("/total-spent")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public Double getTotalSpentByUser(@PathVariable("userId") int userId) {
         return jpqlQueryService.getTotalSpentByUser(userId);
     }
 
     @GetMapping("/average-spent")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public Double getAverageOrderValueByUser(@PathVariable("userId") int userId) {
         return jpqlQueryService.getAverageOrderValueByUser(userId);
     }
 
     @GetMapping("/statistics")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public Object[] getUserStatistics(@PathVariable("userId") int userId) {
         return jpqlQueryService.getUserStatistics(userId);
     }
